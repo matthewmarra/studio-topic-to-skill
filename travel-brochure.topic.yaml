@@ -1,0 +1,87 @@
+kind: AdaptiveDialog
+beginDialog:
+  kind: OnRecognizedIntent
+  id: main
+  intent:
+    triggerQueries:
+      - request a travel brochure
+      - send me a travel brochure
+      - can I get a travel brochure
+      - I'd like a travel brochure
+      - mail me a travel brochure
+      - how do I get a travel brochure
+      - order a travel brochure
+      - get information about your destinations
+      - travel guide request
+      - brochure for your tours
+
+  actions:
+    - kind: Question
+      id: Question_6fMmPm
+      variable: Topic.FullName
+      prompt: What is your first and last name?
+      entity: PersonNamePrebuiltEntity
+
+    - kind: Question
+      id: Question_jE28t3
+      variable: Topic.PhoneNumber
+      prompt: What is your telephone number?
+      entity: PhoneNumberPrebuiltEntity
+
+    - kind: Question
+      id: Question_UtPat7
+      variable: Topic.BrochureDeliveryMethod
+      prompt: How would you like to receive the brochure?
+      entity:
+        kind: EmbeddedEntity
+        definition:
+          kind: ClosedListEntity
+          optionSetName: BrochureDeliveryOptions
+          items:
+            - id: email
+              displayName: Email
+
+            - id: mail
+              displayName: Mail
+
+    - kind: ConditionGroup
+      id: ConditionGroup_jtHqnn
+      conditions:
+        - id: ConditionItem_buDz7M
+          condition: =Topic.BrochureDeliveryMethod = BrochureDeliveryOptions.email
+          actions:
+            - kind: Question
+              id: Question_tqqJ2f
+              variable: Topic.EmailAddress
+              prompt: What is your email address?
+              entity: EmailPrebuiltEntity
+
+        - id: ConditionItem_IxmqKe
+          condition: =Topic.BrochureDeliveryMethod = BrochureDeliveryOptions.mail
+          actions:
+            - kind: Question
+              id: Question_UGbpkv
+              variable: Topic.StreetAddress
+              prompt: What is your street address?
+              entity: StreetAddressPrebuiltEntity
+
+            - kind: Question
+              id: Question_b0pGY5
+              variable: Topic.City
+              prompt: What city do you live in?
+              entity: CityPrebuiltEntity
+
+            - kind: Question
+              id: Question_QqaG9I
+              variable: Topic.State
+              prompt: What state do you live in?
+              entity: StatePrebuiltEntity
+
+            - kind: Question
+              id: Question_isq9Ro
+              variable: Topic.PostalCode
+              prompt: What is your postal code?
+              entity: ZipCodePrebuiltEntity
+
+inputType: {}
+outputType: {}
